@@ -50,5 +50,8 @@
         class="djh.forfun.animaniacs.Views.LineChart"
         android:id="@+id/lineChart"
         android:background="#5e5e5e"
-        android:padding="15dp" />
+        android:paddingLeft="15dp"
+        android:paddingTop="30dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="30dp" />
 </LinearLayout>
