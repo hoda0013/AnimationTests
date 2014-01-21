@@ -17,7 +17,7 @@ public class LineChart extends View {
 
 //    private float [] dataPoints;
     private Dynamics[] dataPoints;
-    private static final float GRAPH_SMOOTHNES = 0.15f;
+    private static final float GRAPH_SMOOTHNES = 0.05f;
 
 
     public LineChart(Context context) {
@@ -135,8 +135,6 @@ public class LineChart extends View {
         paint2.setColor(0x99F08080);
         paint2.setStrokeWidth(4);
         paint2.setAntiAlias(true);
-        paint.setShadowLayer(4,2,2,0x80000000);
-
 
         int left = getPaddingLeft();
         int top = getPaddingTop();
