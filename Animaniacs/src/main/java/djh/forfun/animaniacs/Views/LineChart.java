@@ -18,7 +18,8 @@ public class LineChart extends View {
 //    private float [] dataPoints;
     private Dynamics[] dataPoints;
     private static final float GRAPH_SMOOTHNES = 0.05f;
-
+    private Paint paint = new Paint();
+    private Paint paint2 = new Paint();
 
     public LineChart(Context context) {
         super(context);
@@ -47,9 +48,11 @@ public class LineChart extends View {
                     scheduleNewFrame = true;
                 }
             }
+            
+
             //if any points are still moving, create a new animation frame
             if(scheduleNewFrame){
-                postDelayed(this, 15);
+                postDelayed(this, 20);
             }
 
             invalidate();
@@ -120,28 +123,26 @@ public class LineChart extends View {
 
     private void drawPath(Canvas canvas, float maxValue){
 
-        Path path = drawSmoothPath(maxValue);
+//        Path path = drawSmoothPath(maxValue);
         Path roughPath = drawRoughPath(maxValue);
 
-        Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(0xFF33B5E5);
         paint.setStrokeWidth(4);
         paint.setAntiAlias(true);
         paint.setShadowLayer(4,2,2,0x80000000);
 
-        Paint paint2 = new Paint();
         paint2.setStyle(Paint.Style.STROKE);
         paint2.setColor(0x99F08080);
         paint2.setStrokeWidth(4);
         paint2.setAntiAlias(true);
 
-        int left = getPaddingLeft();
-        int top = getPaddingTop();
-        int right = getWidth() - getPaddingRight();
-        int bottom = getHeight() - getPaddingBottom();
+//        int left = getPaddingLeft();
+//        int top = getPaddingTop();
+//        int right = getWidth() - getPaddingRight();
+//        int bottom = getHeight() - getPaddingBottom();
 
-        canvas.drawPath(path, paint);
+//        canvas.drawPath(path, paint);
         canvas.drawPath(roughPath, paint2);
     }
 
@@ -158,6 +159,7 @@ public class LineChart extends View {
     }
 
     private Path drawSmoothPath(float maxValue){
+
         Path path = new Path();
 
         path.moveTo(getXPos(0), getYPos(dataPoints[0].getPosition(), maxValue));
