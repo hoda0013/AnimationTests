@@ -15,11 +15,12 @@ import djh.forfun.animaniacs.Model.Dynamics;
  */
 public class LineChart extends View {
 
-//    private float [] dataPoints;
+    //    private float [] dataPoints;
     private Dynamics[] dataPoints;
     private static final float GRAPH_SMOOTHNES = 0.05f;
     private Paint paint = new Paint();
-    private Paint paint2 = new Paint();
+    private float maxValue;
+    Path path = new Path();
 
     public LineChart(Context context) {
         super(context);
@@ -48,11 +49,13 @@ public class LineChart extends View {
                     scheduleNewFrame = true;
                 }
             }
-            
+
+            createPath();
+
 
             //if any points are still moving, create a new animation frame
             if(scheduleNewFrame){
-                postDelayed(this, 20);
+                postDelayed(this, 15);
             }
 
             invalidate();
@@ -74,12 +77,15 @@ public class LineChart extends View {
                 dataPoints[i].setTargetPosition(newDataPoints[i]);
             }
 
+            maxValue = getMax(dataPoints);
+            makePaint();
             invalidate();
         }else{
             for(int i = 0; i < newDataPoints.length; i++){
                 dataPoints[i].setTargetPosition(newDataPoints[i]);
             }
 
+            makePaint();
             removeCallbacks(animator);
             post(animator);
         }
@@ -88,9 +94,9 @@ public class LineChart extends View {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        float maxValue = getMax(dataPoints);
-        drawPath(canvas, maxValue);
-
+//        float maxValue = getMax(dataPoints);
+//        drawPath(canvas, maxValue);
+        canvas.drawPath(path,paint);
 
 
     }
@@ -121,29 +127,36 @@ public class LineChart extends View {
         return max;
     }
 
-    private void drawPath(Canvas canvas, float maxValue){
-
-//        Path path = drawSmoothPath(maxValue);
-        Path roughPath = drawRoughPath(maxValue);
-
+    private void makePaint(){
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(0xFF33B5E5);
         paint.setStrokeWidth(4);
         paint.setAntiAlias(true);
         paint.setShadowLayer(4,2,2,0x80000000);
+    }
 
-        paint2.setStyle(Paint.Style.STROKE);
-        paint2.setColor(0x99F08080);
-        paint2.setStrokeWidth(4);
-        paint2.setAntiAlias(true);
+    private void drawPath(Canvas canvas, float maxValue){
+
+//        Path roughPath = drawRoughPath(maxValue);
+
+//        paint.setStyle(Paint.Style.STROKE);
+//        paint.setColor(0xFF33B5E5);
+//        paint.setStrokeWidth(4);
+//        paint.setAntiAlias(true);
+//        paint.setShadowLayer(4,2,2,0x80000000);
+//
+//        paint2.setStyle(Paint.Style.STROKE);
+//        paint2.setColor(0x99F08080);
+//        paint2.setStrokeWidth(4);
+//        paint2.setAntiAlias(true);
 
 //        int left = getPaddingLeft();
 //        int top = getPaddingTop();
 //        int right = getWidth() - getPaddingRight();
 //        int bottom = getHeight() - getPaddingBottom();
 
-//        canvas.drawPath(path, paint);
-        canvas.drawPath(roughPath, paint2);
+        canvas.drawPath(drawSmoothPath(), paint);
+//        canvas.drawPath(roughPath, paint2);
     }
 
     private Path drawRoughPath(float maxValue){
@@ -158,10 +171,11 @@ public class LineChart extends View {
         return path;
     }
 
-    private Path drawSmoothPath(float maxValue){
 
-        Path path = new Path();
 
+    private Path drawSmoothPath(){
+
+        path.reset();
         path.moveTo(getXPos(0), getYPos(dataPoints[0].getPosition(), maxValue));
 
         for (int i = 0; i < dataPoints.length - 1; i++) {
@@ -193,6 +207,40 @@ public class LineChart extends View {
             return 0;
         }
         return i;
+    }
+
+    public void createPath(){
+        Runnable runnable = new Runnable(){
+
+            @Override
+            public void run() {
+                path.reset();
+                path.moveTo(getXPos(0), getYPos(dataPoints[0].getPosition(), maxValue));
+
+                for (int i = 0; i < dataPoints.length - 1; i++) {
+                    float thisPointX = getXPos(i);
+                    float thisPointY = getYPos(dataPoints[i].getPosition(), maxValue);
+                    float nextPointX = getXPos(i + 1);
+                    float nextPointY = getYPos(dataPoints[si(i + 1)].getPosition(), maxValue);
+
+                    float startdiffX = (nextPointX - getXPos(si(i - 1)));
+                    float startdiffY = (nextPointY - getYPos(dataPoints[si(i - 1)].getPosition(), maxValue));
+                    float endDiffX = (getXPos(si(i + 2)) - thisPointX);
+                    float endDiffY = (getYPos(dataPoints[si(i + 2)].getPosition(), maxValue) - thisPointY);
+
+                    float firstControlX = thisPointX + (GRAPH_SMOOTHNES * startdiffX);
+                    float firstControlY = thisPointY + (GRAPH_SMOOTHNES * startdiffY);
+                    float secondControlX = nextPointX - (GRAPH_SMOOTHNES * endDiffX);
+                    float secondControlY = nextPointY - (GRAPH_SMOOTHNES * endDiffY);
+
+                    path.cubicTo(firstControlX, firstControlY, secondControlX, secondControlY, nextPointX,
+                            nextPointY);
+                }
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
 }
