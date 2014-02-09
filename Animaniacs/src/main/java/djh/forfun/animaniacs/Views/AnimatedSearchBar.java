@@ -52,6 +52,7 @@ public class AnimatedSearchBar extends RelativeLayout {
         mAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         mAnimator.start();
+
     }
 
     public void startAnimation(){

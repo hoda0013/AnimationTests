@@ -1,13 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/animationWindow">
+
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="100dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/centerLine"
+        android:layout_centerInParent="true" />
 
     <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:background="#fff324"
-        android:id="@+id/box"></RelativeLayout>
-</LinearLayout>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#6b6b6b"
+        android:id="@+id/rightSideStationary"
+        android:layout_alignBottom="@+id/leftSide"
+        android:layout_toRightOf="@+id/centerLine">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="12"
+            android:id="@+id/rightTVStationary"
+            android:textSize="80dp"
+            android:background="#464646"
+            android:textColor="#78bab2"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            android:layout_margin="3dp"
+            android:gravity="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#6b6b6b"
+        android:id="@+id/rightSide"
+        android:layout_alignBottom="@+id/leftSide"
+        android:layout_toRightOf="@+id/centerLine">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="12"
+            android:id="@+id/rightTV"
+            android:textSize="80dp"
+            android:background="#464646"
+            android:textColor="#78bab2"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            android:layout_margin="3dp"
+            android:gravity="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#6b6b6b"
+        android:id="@+id/leftSideStationary"
+        android:layout_toLeftOf="@+id/centerLine"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="12"
+            android:id="@+id/leftTVStationary"
+            android:textSize="80dp"
+            android:background="#464646"
+            android:textColor="#78bab2"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            android:layout_margin="3dp"
+            android:gravity="center" />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="#6b6b6b"
+            android:id="@+id/leftSide"
+            android:layout_toLeftOf="@+id/centerLine"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="12"
+                android:id="@+id/leftTV"
+                android:textSize="80dp"
+                android:background="#464646"
+                android:textColor="#78bab2"
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                android:layout_margin="3dp"
+                android:gravity="center" />
+        </RelativeLayout>
+
+</RelativeLayout>
